@@ -1,3 +1,4 @@
+import 'package:evote/controller/login_controller.dart';
 import 'package:evote/utils/component/custom_button.dart';
 import 'package:evote/utils/component/custom_text_botton.dart';
 import 'package:evote/utils/component/input_form.dart';
@@ -8,7 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Login extends StatelessWidget {
-  const Login({super.key});
+  Login({super.key});
+  final LoginController loginController = Get.put(LoginController());
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +31,7 @@ class Login extends StatelessWidget {
                   child: Container(
                     height: MediaQuery.of(context).size.height / 2,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(32),
                           topRight: Radius.circular(32),
                         ),
@@ -46,23 +50,30 @@ class Login extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const InputForm(
+                              InputForm(
                                 title: 'Enter your email',
                                 icon: Icons.email,
+                                controller: emailController,
                               ),
                               sizeBox,
-                              const InputForm(
-                                title: 'Enter your email',
+                              InputForm(
+                                title: 'Enter your password',
                                 icon: Icons.password,
+                                controller: passwordController,
                               ),
                               const SizedBox(height: kDefaultPadding*2,),
                               CustomButton(
                                 title: 'Login',
-                                onPress: () {},
+                                onPress: () {
+                                  loginController.login(
+                                    emailController.text.trim(),
+                                    passwordController.text.trim(),
+                                  );
+                                },
                               ),
                               sizeBox,
                               CustomTextButton(firstText: "Don't have an account?  ", secondText: 'Register here', onPress: () {
-                                Get.to(()=> const Register(),transition: Transition.leftToRight);
+                                Get.to(()=> Register(),transition: Transition.leftToRight);
                               },)
                             ],
                           ),
